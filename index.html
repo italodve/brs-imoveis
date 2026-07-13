@@ -387,6 +387,52 @@
     }
     .card-feats span { display: inline-flex; align-items: center; gap: 5px; }
     .card .btn { margin-top: 13px; width: 100%; font-size: .9rem; padding: 12px 16px; border-radius: 12px; }
+    .card-img.has-fotos { cursor: pointer; }
+    .foto-count {
+      position: absolute; right: 12px; bottom: 12px; z-index: 2;
+      background: rgba(12, 31, 24, .72); color: #fff;
+      font-size: .74rem; font-weight: 600; padding: 4px 11px; border-radius: 999px;
+      backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+    }
+
+    /* ===== Galeria de fotos (lightbox) ===== */
+    .lightbox {
+      position: fixed; inset: 0; z-index: 600;
+      background: rgba(8, 20, 15, .95);
+      display: none; flex-direction: column; align-items: center; justify-content: center;
+      gap: 14px; padding: 56px 74px 18px;
+    }
+    .lightbox.open { display: flex; }
+    .lb-stage { display: flex; flex-direction: column; align-items: center; gap: 10px; min-width: 0; margin: 0; }
+    .lb-stage img {
+      max-width: min(960px, 86vw); max-height: 66vh; object-fit: contain;
+      border-radius: 14px; box-shadow: 0 24px 80px rgba(0, 0, 0, .5); background: var(--ink);
+    }
+    .lb-stage figcaption { color: rgba(255,255,255,.85); font-size: .88rem; text-align: center; }
+    .lb-close, .lb-nav {
+      position: absolute; z-index: 2; border: 0; cursor: pointer;
+      background: rgba(255,255,255,.12); color: #fff;
+      width: 46px; height: 46px; border-radius: 50%;
+      font-size: 1.5rem; line-height: 1; display: grid; place-items: center;
+      transition: background .2s ease;
+    }
+    .lb-close:hover, .lb-nav:hover { background: rgba(255,255,255,.26); }
+    .lb-close { top: 18px; right: 18px; font-size: 1.1rem; }
+    .lb-prev { left: 16px; top: 50%; transform: translateY(-50%); }
+    .lb-next { right: 16px; top: 50%; transform: translateY(-50%); }
+    .lb-thumbs { display: flex; gap: 8px; max-width: 92vw; overflow-x: auto; padding: 4px 2px; }
+    .lb-thumbs img {
+      width: 64px; height: 48px; object-fit: cover; border-radius: 8px; cursor: pointer;
+      opacity: .55; border: 2px solid transparent; flex: 0 0 auto;
+      transition: opacity .2s ease, border-color .2s ease;
+    }
+    .lb-thumbs img.active, .lb-thumbs img:hover { opacity: 1; border-color: var(--champagne); }
+    @media (max-width: 640px) {
+      .lightbox { padding: 56px 10px 12px; }
+      .lb-stage img { max-width: 94vw; max-height: 58vh; }
+      .lb-prev { left: 6px; }
+      .lb-next { right: 6px; }
+    }
     .empty {
       grid-column: 1 / -1;
       text-align: center;
@@ -933,7 +979,7 @@
           <div class="brand-mark">BRS</div>
           <div class="brand-name" style="color:#fff">BRS Imóveis<small>São Bernardo do Campo · SP</small></div>
         </a>
-        <p>Imobiliária em São Bernardo do Campo/SP especializada em compra, venda, locação e administração de casas, apartamentos, sobrados, terrenos e pontos comerciais no Grande ABC.</p>
+        <p>Imobiliária em São Bernardo do Campo/SP especializada em compra, venda, locação e administração de casas, apartamentos, sobrados, terrenos e pontos comerciais no Grande ABC. CRECI 30825-J.</p>
         <div class="foot-social">
           <a href="https://www.instagram.com/brs.imoveis.sbc/" target="_blank" rel="noopener" aria-label="Instagram">
             <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.25.07 1.65.07 4.85s0 3.6-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.25.06-1.65.07-4.85.07s-3.6 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.4 2.2 8.8 2.2 12 2.2m0 1.8c-3.15 0-3.52 0-4.77.07-1.08.05-1.66.23-2.05.38-.51.2-.88.44-1.26.82-.38.38-.62.75-.82 1.26-.15.39-.33.97-.38 2.05-.06 1.25-.07 1.62-.07 4.77s0 3.52.07 4.77c.05 1.08.23 1.66.38 2.05.2.51.44.88.82 1.26.38.38.75.62 1.26.82.39.15.97.33 2.05.38 1.25.06 1.62.07 4.77.07s3.52 0 4.77-.07c1.08-.05 1.66-.23 2.05-.38.51-.2.88-.44 1.26-.82.38-.38.62-.75.82-1.26.15-.39.33-.97.38-2.05.06-1.25.07-1.62.07-4.77s0-3.52-.07-4.77c-.05-1.08-.23-1.66-.38-2.05-.2-.51-.44-.88-.82-1.26a3.36 3.36 0 0 0-1.26-.82c-.39-.15-.97-.33-2.05-.38-1.25-.06-1.62-.07-4.77-.07M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10m0 1.8a3.2 3.2 0 1 0 0 6.4 3.2 3.2 0 0 0 0-6.4m5.2-3.1a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3"/></svg>
@@ -976,13 +1022,25 @@
   <!-- Back to top -->
   <button class="to-top" id="to-top" aria-label="Voltar ao topo">↑</button>
 
+  <!-- Galeria de fotos (lightbox) -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Galeria de fotos do imóvel">
+    <button class="lb-close" id="lb-close" aria-label="Fechar galeria">✕</button>
+    <button class="lb-nav lb-prev" id="lb-prev" aria-label="Foto anterior">‹</button>
+    <figure class="lb-stage">
+      <img id="lb-img" src="" alt="">
+      <figcaption><span id="lb-caption"></span> · <span id="lb-count"></span></figcaption>
+    </figure>
+    <button class="lb-nav lb-next" id="lb-next" aria-label="Próxima foto">›</button>
+    <div class="lb-thumbs" id="lb-thumbs"></div>
+  </div>
+
   <script>
     /* =====================================================
        CONFIGURAÇÃO — edite aqui
        ===================================================== */
     const CONFIG = {
-      // TROQUE pelo número real da BRS Imóveis: DDI+DDD, apenas dígitos. Ex.: 5511999999999
-      whatsapp: "5511999999999",
+      // WhatsApp oficial BRS Imóveis (fonte: bio do Instagram @brs.imoveis.sbc)
+      whatsapp: "5511983741777",
       mensagemPadrao: "Olá, BRS Imóveis! Vi o site de vocês e gostaria de mais informações sobre imóveis em São Bernardo do Campo.",
       instagram: "https://www.instagram.com/brs.imoveis.sbc/",
       mapsUrl: "https://www.google.com/maps/search/?api=1&query=BRS%20Im%C3%B3veis&query_place_id=ChIJhRGhtbFBzpQRFq0ovXWQ5zo"
@@ -995,6 +1053,9 @@
        Fotos: cada card procura automaticamente o arquivo
        images/imovel-<id>.jpg; se não existir, mostra a ilustração.
        Para usar outro caminho, adicione foto: "images/minha-foto.jpg"
+       Galeria: fotos: N indica que existem N fotos no padrão
+       images/imovel-<id>.jpg, imovel-<id>-2.jpg ... imovel-<id>-N.jpg
+       (o card ganha um contador e abre a galeria ao clicar na foto).
        ===================================================== */
     const IMOVEIS = [
       { id: 1,  titulo: "Apartamento 2 dorms com sacada e vaga", tipo: "apartamento", finalidade: "venda", bairro: "Rudge Ramos", preco: 450000, quartos: 2, banheiros: 1, vagas: 1, area: 62, destaque: true,
@@ -1020,7 +1081,17 @@
       { id: 11, titulo: "Sobrado 3 dorms com quintal", tipo: "casa", finalidade: "venda", bairro: "Planalto", preco: 530000, quartos: 3, banheiros: 2, vagas: 2, area: 150, destaque: false,
         descricao: "Sobrado espaçoso com cozinha planejada, quintal e 2 vagas cobertas." },
       { id: 12, titulo: "Apartamento 2 dorms com lazer completo", tipo: "apartamento", finalidade: "venda", bairro: "Vila Marchi", preco: 350000, quartos: 2, banheiros: 1, vagas: 1, area: 50, destaque: false,
-        descricao: "Condomínio com piscina, quadra e churrasqueira — ótimo para família." }
+        descricao: "Condomínio com piscina, quadra e churrasqueira — ótimo para família." },
+      { id: 13, titulo: "Apartamento 65 m² no Residencial Costa do Sol", tipo: "apartamento", finalidade: "venda", bairro: "Baeta Neves", preco: 530000, quartos: 3, banheiros: 1, vagas: 2, area: 65, destaque: true, fotos: 10,
+        descricao: "Rua dos Vianas — armários planejados, sala com sacada e 2 vagas demarcadas. Condomínio com portaria 24h, elevador, piscina, academia, quadra e minimercado (R$ 496/mês)." },
+      { id: 14, titulo: "Casa térrea 243 m² no Baeta Neves", tipo: "casa", finalidade: "venda", bairro: "Baeta Neves", preco: 790000, quartos: 3, banheiros: 3, vagas: 3, area: 243, destaque: true, fotos: 10,
+        descricao: "3 dorms (1 suíte), lavabo, despensa, dependência de empregada, quintal e 3 vagas cobertas — pertinho do Sonda. Necessita reforma. Aceita financiamento e FGTS." },
+      { id: 15, titulo: "Sobrado 150 m² com 4 suítes na Vila Dayse", tipo: "casa", finalidade: "venda", bairro: "Vila Dayse", preco: 1600000, quartos: 4, banheiros: 5, vagas: 3, area: 150, destaque: true, fotos: 10,
+        descricao: "4 suítes com sacada, lavabo, sala para 2 ambientes, cozinha americana e quintal com churrasqueira — ao lado do Shopping Golden. Aceita financiamento e FGTS." },
+      { id: 16, titulo: "Casa térrea 193,82 m² na Vila Dusi", tipo: "casa", finalidade: "venda", bairro: "Vila Dusi", preco: 1100000, quartos: 2, banheiros: 2, vagas: 3, area: 194, destaque: false, fotos: 10,
+        descricao: "Terreno 10x30 com quintal, jardim e edícula; 3 vagas de garagem. Necessita reforma — ótima oportunidade. Aceita financiamento e FGTS." },
+      { id: 17, titulo: "Apartamento térreo 145 m² no Centro", tipo: "apartamento", finalidade: "venda", bairro: "Centro", preco: 745000, quartos: 3, banheiros: 2, vagas: 1, area: 145, destaque: true, fotos: 10,
+        descricao: "Rua Bela Vista — 3 dorms (1 suíte) com armários, sala ampla, cozinha planejada e área de serviço separada. Condomínio de R$ 600. Aceita financiamento." }
     ];
 
     /* ===================================================== */
@@ -1132,14 +1203,16 @@
           `📐 ${im.area} m²`
         ].filter(Boolean).map(f => `<span>${f}</span>`).join("");
         const foto = im.foto || `images/imovel-${im.id}.jpg`;
+        const temGaleria = Number(im.fotos) > 1;
         return `<article class="card" style="animation-delay:${Math.min(idx * 60, 360)}ms">
-          <div class="card-img">
+          <div class="card-img${temGaleria ? " has-fotos" : ""}"${temGaleria ? ` onclick="abrirGaleria(${im.id})" onkeydown="if(event.key==='Enter')abrirGaleria(${im.id})" role="button" tabindex="0" aria-label="Ver as ${im.fotos} fotos de ${im.titulo}"` : ""}>
             <svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${im.titulo}">${ART[im.tipo](HUES[im.tipo] + (im.id * 7) % 24)}</svg>
             <img class="card-foto" src="${foto}" alt="${im.titulo}" loading="lazy" onerror="this.remove()">
             <div class="card-badges">
               <span class="badge ${im.finalidade}">${im.finalidade === "venda" ? "Venda" : "Aluguel"}</span>
               ${im.destaque ? '<span class="badge destaque">Destaque</span>' : ""}
             </div>
+            ${temGaleria ? `<span class="foto-count">📷 ${im.fotos} fotos</span>` : ""}
           </div>
           <div class="card-body">
             <div class="card-price">${fmtBRL(im.preco)}${im.finalidade === "aluguel" ? " <small>/mês</small>" : ""}</div>
@@ -1151,6 +1224,59 @@
         </article>`;
       }).join("");
     }
+
+    // ===== Galeria de fotos (lightbox) =====
+    function fotosDe(im) {
+      if (!Number(im.fotos)) return [];
+      return Array.from({ length: im.fotos }, (_, k) =>
+        k === 0 ? (im.foto || `images/imovel-${im.id}.jpg`) : `images/imovel-${im.id}-${k + 1}.jpg`);
+    }
+    const gal = { fotos: [], i: 0, titulo: "" };
+    const lightbox = document.getElementById("lightbox");
+    const lbImg = document.getElementById("lb-img");
+    const lbCaption = document.getElementById("lb-caption");
+    const lbCount = document.getElementById("lb-count");
+    const lbThumbs = document.getElementById("lb-thumbs");
+
+    function mostraFoto(i) {
+      gal.i = (i + gal.fotos.length) % gal.fotos.length;
+      lbImg.src = gal.fotos[gal.i];
+      lbImg.alt = `${gal.titulo} — foto ${gal.i + 1}`;
+      lbCount.textContent = `${gal.i + 1} / ${gal.fotos.length}`;
+      lbThumbs.querySelectorAll("img").forEach((t, k) => t.classList.toggle("active", k === gal.i));
+      const ativa = lbThumbs.children[gal.i];
+      if (ativa) ativa.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
+    }
+    window.mostraFoto = mostraFoto;
+
+    window.abrirGaleria = function (id) {
+      const im = IMOVEIS.find(x => x.id === id);
+      if (!im) return;
+      gal.fotos = fotosDe(im);
+      if (!gal.fotos.length) return;
+      gal.titulo = im.titulo;
+      lbCaption.textContent = im.titulo;
+      lbThumbs.innerHTML = gal.fotos.map((f, k) =>
+        `<img src="${f}" alt="Miniatura ${k + 1}" loading="lazy" onclick="mostraFoto(${k})">`).join("");
+      mostraFoto(0);
+      lightbox.classList.add("open");
+      document.body.style.overflow = "hidden";
+    };
+
+    function fecharGaleria() {
+      lightbox.classList.remove("open");
+      document.body.style.overflow = "";
+    }
+    document.getElementById("lb-close").addEventListener("click", fecharGaleria);
+    document.getElementById("lb-prev").addEventListener("click", () => mostraFoto(gal.i - 1));
+    document.getElementById("lb-next").addEventListener("click", () => mostraFoto(gal.i + 1));
+    lightbox.addEventListener("click", e => { if (e.target === lightbox) fecharGaleria(); });
+    document.addEventListener("keydown", e => {
+      if (!lightbox.classList.contains("open")) return;
+      if (e.key === "Escape") fecharGaleria();
+      if (e.key === "ArrowLeft") mostraFoto(gal.i - 1);
+      if (e.key === "ArrowRight") mostraFoto(gal.i + 1);
+    });
 
     // Tabs
     document.querySelectorAll(".search-tabs button").forEach(btn => {
